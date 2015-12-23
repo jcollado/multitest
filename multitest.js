@@ -1,4 +1,6 @@
 #!/usr/bin/env node
 'use strict'
 
-console.log('Done!')
+const logger = require('./lib/logging').logger
+
+logger.info('Done!')
