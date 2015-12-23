@@ -4,5 +4,5 @@
 const main = require('./lib/main')
 
 if (require.main === module) {
-  main()
+  process.exit(main())
 }
