@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "commander": "2.9.0",
-    "js-yaml": "3.4.6",
+    "js-yaml": "3.5.2",
     "rimraf": "2.5.0",
     "winston": "2.1.1"
   }
