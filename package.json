@@ -33,7 +33,6 @@
   "dependencies": {
     "commander": "2.9.0",
     "js-yaml": "3.5.2",
-    "promisify-node": "0.3.0",
     "winston": "2.1.1"
   }
 }
