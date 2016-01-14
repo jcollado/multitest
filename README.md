@@ -60,8 +60,9 @@ This would be an example of such a configuration:
 ```json
 {
   "scripts": {
-    "multitest": "multitest"
+    "multitest": "multitest",
     "preversion": "npm run multitest"
+  }
 }
 ```
 
