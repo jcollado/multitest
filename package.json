@@ -7,6 +7,7 @@
     "multitest": "./multitest.js"
   },
   "scripts": {
+    "lint": "standard",
     "postversion": "git push && git push --tags && pr-tagger",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -28,7 +29,8 @@
   },
   "homepage": "https://github.com/jcollado/multitest#readme",
   "devDependencies": {
-    "pr-tagger": "0.4.1"
+    "pr-tagger": "0.4.1",
+    "standard": "5.4.1"
   },
   "dependencies": {
     "commander": "2.9.0",
