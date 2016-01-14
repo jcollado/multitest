@@ -2,6 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/multitest.svg)](https://www.npmjs.com/package/multitest)
 [![Build Status](https://travis-ci.org/jcollado/multitest.svg?branch=master)](https://travis-ci.org/jcollado/multitest)
+[![Coverage Status](https://coveralls.io/repos/jcollado/multitest/badge.svg?branch=master&service=github)](https://coveralls.io/github/jcollado/multitest?branch=master)
 [![Dependency Status](https://david-dm.org/jcollado/multitest.svg)](https://david-dm.org/jcollado/multitest)
 [![devDependency Status](https://david-dm.org/jcollado/multitest/dev-status.svg)](https://david-dm.org/jcollado/multitest#info=devDependencies)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
