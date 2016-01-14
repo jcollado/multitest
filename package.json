@@ -8,6 +8,7 @@
   },
   "scripts": {
     "cover": "istanbul cover _mocha -- ./test",
+    "coveralls": "istanbul cover --report lcovonly _mocha -- ./test && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "lint": "standard",
     "postversion": "git push && git push --tags && pr-tagger",
     "test": "mocha ./test"
@@ -31,6 +32,7 @@
   "homepage": "https://github.com/jcollado/multitest#readme",
   "devDependencies": {
     "chai": "3.4.1",
+    "coveralls": "2.11.6",
     "istanbul": "0.4.2",
     "mocha": "2.3.4",
     "pr-tagger": "0.4.1",
