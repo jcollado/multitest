@@ -15,5 +15,5 @@ The flow the tool when executed for the first time is as follows:
 - Clone code in `<project>/.multitest/<version>`
 - Run `nvm use <version> && npm install && npm test`
 
-After the first run, , `git pull` is executed instead of `git clone`. This way,
+After the first run, `git pull` is executed instead of `git clone`. This way,
 there's no need to clone code again and re-install dependencies from scratch.
