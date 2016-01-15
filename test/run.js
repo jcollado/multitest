@@ -17,6 +17,11 @@ describe('runTests', function () {
   let logger
   let util
   let stubs
+  const defaultCommandOutput = {
+      command: 'command',
+      stdout: 'stdout',
+      stderr: 'stderr'
+  }
 
   beforeEach(function () {
     logger = {
@@ -25,7 +30,8 @@ describe('runTests', function () {
     }
     util = {
       exists: sinon.stub(),
-      exec: sinon.stub()
+      exec: sinon.stub(),
+      mkdir: sinon.stub()
     }
     stubs = {}
     stubs[require.resolve('../lib/logging')] = {logger}
@@ -34,13 +40,27 @@ describe('runTests', function () {
 
   it('pulls changes if version directory exists', function () {
     util.exists.resolves()
-    util.exec.resolves()
+    util.exec.resolves(defaultCommandOutput)
     const runTests = requireInject('../lib/run', stubs).runTests
 
     return expect(runTests('some dir', 'some version'))
       .to.eventually.be.fulfilled.then(function () {
         expect(util.exec).to.have.been.calledWith(
           'git pull', {cwd: 'some dir/some version'})
+      })
+  })
+
+  it('makes directory and clones if version directory does not exist', function () {
+    util.exists.rejects()
+    util.mkdir.resolves()
+    util.exec.resolves(defaultCommandOutput)
+    const runTests = requireInject('../lib/run', stubs).runTests
+
+    return expect(runTests('some dir', 'some version'))
+      .to.eventually.be.fulfilled.then(function () {
+        expect(util.mkdir).to.have.been.calledWith('some dir/some version')
+        expect(util.exec).to.have.been.calledWith(
+          'git clone . some dir/some version')
       })
   })
 })
