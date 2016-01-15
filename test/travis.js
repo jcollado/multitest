@@ -25,6 +25,7 @@ describe('travis.parse', function () {
       }
     }
     logger = {
+      info: sinon.spy(),
       error: sinon.spy()
     }
     stubs[require.resolve('../lib/logging')] = {logger}
@@ -75,6 +76,21 @@ describe('travis.parse', function () {
     return expect(parse()).to.be.eventually.rejected.then(function () {
       expect(logger.error).to.have.been.calledWith(
         'node_js field not found in travis configuration')
+    })
+  })
+
+  it('resolves to versions found', function () {
+    util.exists = sinon.stub().resolves()
+    util.readFile = sinon.stub().resolves(
+      'language: node_js\n' +
+      'node_js:\n' +
+      '- 4\n' +
+      '- 5')
+
+    const parse = requireInject('../lib/travis', stubs)
+    return expect(parse()).to.eventually.deep.equal([4, 5]).then(function () {
+      expect(logger.info).to.have.been.calledWith(
+        'Node versions to use for testing: %s', [4, 5])
     })
   })
 })
