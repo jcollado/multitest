@@ -1,4 +1,4 @@
-/* global describe it */
+/* global describe it beforeEach */
 'use strict'
 
 const chai = require('chai')
@@ -14,19 +14,28 @@ chai.use(sinonChai)
 const expect = chai.expect
 
 describe('travis.parse', function () {
-  it('rejects if file is not found', function () {
-    const stubs = {
+  let stubs
+  let logger
+  let util
+
+  beforeEach(function () {
+    stubs = {
       path: {
         join: sinon.stub().returns('<travis-file>')
       }
     }
-    const logger = {
+    logger = {
       error: sinon.spy()
     }
     stubs[require.resolve('../lib/logging')] = {logger}
-    stubs[require.resolve('../lib/util')] = {
-      exists: sinon.stub().rejects()
-    }
+
+    util = {}
+    stubs[require.resolve('../lib/util')] = util
+  })
+
+  it('rejects if file is not found', function () {
+    util.exists = sinon.stub().rejects()
+
     const parse = requireInject('../lib/travis', stubs)
     return expect(parse()).to.be.eventually.rejected.then(function () {
       expect(logger.error).to.have.been.calledWith(
@@ -35,19 +44,9 @@ describe('travis.parse', function () {
   })
 
   it('rejects if language field is not found', function () {
-    const stubs = {
-      path: {
-        join: sinon.stub().returns('<travis-file>')
-      }
-    }
-    const logger = {
-      error: sinon.spy()
-    }
-    stubs[require.resolve('../lib/logging')] = {logger}
-    stubs[require.resolve('../lib/util')] = {
-      exists: sinon.stub().resolves(),
-      readFile: sinon.stub().resolves('value: 42')
-    }
+    util.exists = sinon.stub().resolves()
+    util.readFile = sinon.stub().resolves('value: 42')
+
     const parse = requireInject('../lib/travis', stubs)
     return expect(parse()).to.be.eventually.rejected.then(function () {
       expect(logger.error).to.have.been.calledWith(
