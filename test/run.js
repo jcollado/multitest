@@ -77,4 +77,19 @@ describe('runTests', function () {
         {cwd: 'some dir/some version', shell: '/bin/bash'})
       })
   })
+
+  it('returns 0 on success', function () {
+    util.exists.resolves()
+    util.exec.resolves(defaultCommandOutput)
+    const runTests = requireInject('../lib/run', stubs).runTests
+
+    return expect(runTests('some dir', 'some version'))
+      .to.eventually.deep.equal({
+        version: 'some version',
+        returnCode: 0
+      }).then(function () {
+        expect(logger.info).to.have.been.calledWith(
+          '[%s] Test case execution success', 'some version')
+      })
+  })
 })
