@@ -18,9 +18,9 @@ describe('runTests', function () {
   let util
   let stubs
   const defaultCommandOutput = {
-      command: 'command',
-      stdout: 'stdout',
-      stderr: 'stderr'
+    command: 'command',
+    stdout: 'stdout',
+    stderr: 'stderr'
   }
 
   beforeEach(function () {
