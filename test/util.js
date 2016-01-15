@@ -22,6 +22,8 @@ describe('exec', function () {
       }
     }
     const util = requireInject('../lib/util', stubs)
-    return expect(util.exec()).to.be.eventually.rejectedWith('some error')
+    return expect(util.exec('command'))
+      .to.be.eventually.rejectedWith('some error')
+  })
   })
 })
