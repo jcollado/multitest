@@ -27,7 +27,8 @@ describe('runTests', function () {
   beforeEach(function () {
     logger = {
       debug: sinon.spy(),
-      info: sinon.spy()
+      info: sinon.spy(),
+      error: sinon.spy()
     }
     util = {
       exists: sinon.stub(),
@@ -90,6 +91,23 @@ describe('runTests', function () {
       }).then(function () {
         expect(logger.info).to.have.been.calledWith(
           '[%s] Test case execution success', 'some version')
+      })
+  })
+
+  it('returns err.code on failure', function () {
+    util.exists.resolves()
+    util.exec
+      .onFirstCall().resolves(defaultCommandOutput)
+      .onSecondCall().rejects({message: 'some error', code: 42})
+    const runTests = requireInject('../lib/run', stubs).runTests
+
+    return expect(runTests('some dir', 'some version'))
+      .to.eventually.deep.equal({
+        version: 'some version',
+        returnCode: 42
+      }).then(function () {
+        expect(logger.error).to.have.been.calledWith(
+          '[%s] %s', 'some version', 'some error')
       })
   })
 })
