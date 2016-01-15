@@ -110,4 +110,20 @@ describe('runTests', function () {
           '[%s] %s', 'some version', 'some error')
       })
   })
+
+  it('return 1 if err.code is missing on failure', function () {
+    util.exists.rejects()
+    util.mkdir.rejects(new Error('some error'))
+    const runTests = requireInject('../lib/run', stubs).runTests
+
+    return expect(runTests('some dir', 'some version'))
+      .to.be.eventually.fulfilled.then(function (result) {
+        expect(result).to.deep.equal({
+          version: 'some version',
+          returnCode: 1
+        })
+        expect(logger.error).to.have.been.calledWith(
+          '[%s] %s', 'some version', 'some error')
+      })
+  })
 })
