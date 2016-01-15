@@ -15,7 +15,7 @@ const expect = chai.expect
 
 describe('exec', function () {
   it('rejects if childProcess.exec fails', function () {
-    const exec = sinon.stub().yields(['some error'])
+    const exec = sinon.stub().yields('some error')
     const stubs = {
       child_process: {
         exec
