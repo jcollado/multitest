@@ -43,3 +43,29 @@ describe('exec', function () {
     })
   })
 })
+
+describe('exists', function () {
+  let exists
+  let stubs
+
+  beforeEach(function () {
+    exists = sinon.stub()
+    stubs = {
+      fs: {
+        exists
+      }
+    }
+  })
+
+  it('rejects if fs.exists returns false', function () {
+    exists.yields(false)
+    const util = requireInject('../lib/util', stubs)
+    return expect(util.exists('path')).to.be.eventually.rejected
+  })
+
+  it('resolves if fs.exists returns true', function () {
+    exists.yields(true)
+    const util = requireInject('../lib/util', stubs)
+    return expect(util.exists('path')).to.be.eventually.fulfilled
+  })
+})
