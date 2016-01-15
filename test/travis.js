@@ -33,4 +33,25 @@ describe('travis.parse', function () {
         'Travis file not found: %s', '<travis-file>')
     })
   })
+
+  it('rejects if language field is not found', function () {
+    const stubs = {
+      path: {
+        join: sinon.stub().returns('<travis-file>')
+      }
+    }
+    const logger = {
+      error: sinon.spy()
+    }
+    stubs[require.resolve('../lib/logging')] = {logger}
+    stubs[require.resolve('../lib/util')] = {
+      exists: sinon.stub().resolves(),
+      readFile: sinon.stub().resolves('value: 42')
+    }
+    const parse = requireInject('../lib/travis', stubs)
+    return expect(parse()).to.be.eventually.rejected.then(function () {
+      expect(logger.error).to.have.been.calledWith(
+        'language field not found in travis configuration')
+    })
+  })
 })
