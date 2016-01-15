@@ -1,4 +1,4 @@
-/* global describe it */
+/* global describe it beforeEach */
 'use strict'
 
 const chai = require('chai')
@@ -14,25 +14,27 @@ chai.use(sinonChai)
 const expect = chai.expect
 
 describe('exec', function () {
-  it('rejects if childProcess.exec fails', function () {
-    const exec = sinon.stub().yields('some error')
-    const stubs = {
+  let exec
+  let stubs
+
+  beforeEach(function () {
+    exec = sinon.stub()
+    stubs = {
       child_process: {
         exec
       }
     }
+  })
+
+  it('rejects if childProcess.exec fails', function () {
+    exec.yields('some error')
     const util = requireInject('../lib/util', stubs)
     return expect(util.exec('command'))
       .to.be.eventually.rejectedWith('some error')
   })
 
   it('resolves if childProcess.exec succeeds', function () {
-    const exec = sinon.stub().yields(null, 'stdout', 'stderr')
-    const stubs = {
-      child_process: {
-        exec
-      }
-    }
+    exec.yields(null, 'stdout', 'stderr')
     const util = requireInject('../lib/util', stubs)
     return expect(util.exec('command')).to.eventually.deep.equal({
       command: 'command',
