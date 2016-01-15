@@ -6,7 +6,6 @@ const chaiAsPromised = require('chai-as-promised')
 const requireInject = require('require-inject')
 const sinon = require('sinon')
 const sinonChai = require('sinon-chai')
-require('sinon-as-promised')
 
 chai.use(chaiAsPromised)
 chai.use(sinonChai)
