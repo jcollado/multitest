@@ -54,7 +54,7 @@ describe('travis.parse', function () {
     })
   })
 
-  it('rejects if language field is not nodejs', function () {
+  it('rejects if language field is not node_js', function () {
     util.exists = sinon.stub().resolves()
     util.readFile = sinon.stub().resolves('language: some-other-language')
 
@@ -64,6 +64,17 @@ describe('travis.parse', function () {
         'Unexpected language in travis configuration: %s',
         'some-other-language'
       )
+    })
+  })
+
+  it('rejects if node_js field is not found', function () {
+    util.exists = sinon.stub().resolves()
+    util.readFile = sinon.stub().resolves('language: node_js')
+
+    const parse = requireInject('../lib/travis', stubs)
+    return expect(parse()).to.be.eventually.rejected.then(function () {
+      expect(logger.error).to.have.been.calledWith(
+        'node_js field not found in travis configuration')
     })
   })
 })
