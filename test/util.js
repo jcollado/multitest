@@ -69,3 +69,31 @@ describe('exists', function () {
     return expect(util.exists('path')).to.be.eventually.fulfilled
   })
 })
+
+describe('promisify', function () {
+  it('calls wrapped function with arguments', function () {
+    const util = require('../lib/util')
+    const fn = sinon.stub().yields()
+    const promisified = util.promisify(fn)
+    return expect(promisified('some', 'arguments'))
+      .to.be.eventually.fulfilled.then(function () {
+        expect(fn).to.have.been.calledWith('some', 'arguments')
+      })
+  })
+
+  it('rejects when wrapped function returns error', function () {
+    const util = require('../lib/util')
+    const fn = sinon.stub().yields('some error')
+    const promisified = util.promisify(fn)
+    return expect(promisified('some', 'arguments'))
+      .to.be.eventually.rejectedWith('some error')
+  })
+
+  it('resolves when wrapped function returns no error', function () {
+    const util = require('../lib/util')
+    const fn = sinon.stub().yields(null, 'a', 'result')
+    const promisified = util.promisify(fn)
+    return expect(promisified('some', 'arguments'))
+      .to.eventually.deep.equal(['a', 'result'])
+  })
+})
