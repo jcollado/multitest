@@ -18,6 +18,10 @@ describe('travis.parse', function () {
   let logger
   let util
 
+  function requireModule () {
+    return requireInject('../lib/travis', stubs)
+  }
+
   beforeEach(function () {
     stubs = {
       path: {
@@ -37,7 +41,7 @@ describe('travis.parse', function () {
   it('rejects if file is not found', function () {
     util.exists = sinon.stub().rejects()
 
-    const parse = requireInject('../lib/travis', stubs)
+    const parse = requireModule()
     return expect(parse()).to.be.eventually.rejected.then(function () {
       expect(logger.error).to.have.been.calledWith(
         'Travis file not found: %s', '<travis-file>')
@@ -48,7 +52,7 @@ describe('travis.parse', function () {
     util.exists = sinon.stub().resolves()
     util.readFile = sinon.stub().resolves('value: 42')
 
-    const parse = requireInject('../lib/travis', stubs)
+    const parse = requireModule()
     return expect(parse()).to.be.eventually.rejected.then(function () {
       expect(logger.error).to.have.been.calledWith(
         'language field not found in travis configuration')
@@ -59,7 +63,7 @@ describe('travis.parse', function () {
     util.exists = sinon.stub().resolves()
     util.readFile = sinon.stub().resolves('language: some-other-language')
 
-    const parse = requireInject('../lib/travis', stubs)
+    const parse = requireModule()
     return expect(parse()).to.be.eventually.rejected.then(function () {
       expect(logger.error).to.have.been.calledWith(
         'Unexpected language in travis configuration: %s',
@@ -72,7 +76,7 @@ describe('travis.parse', function () {
     util.exists = sinon.stub().resolves()
     util.readFile = sinon.stub().resolves('language: node_js')
 
-    const parse = requireInject('../lib/travis', stubs)
+    const parse = requireModule()
     return expect(parse()).to.be.eventually.rejected.then(function () {
       expect(logger.error).to.have.been.calledWith(
         'node_js field not found in travis configuration')
@@ -87,7 +91,7 @@ describe('travis.parse', function () {
       '- 4\n' +
       '- 5')
 
-    const parse = requireInject('../lib/travis', stubs)
+    const parse = requireModule()
     return expect(parse()).to.eventually.deep.equal([4, 5]).then(function () {
       expect(logger.info).to.have.been.calledWith(
         'Node versions to use for testing: %s', [4, 5])

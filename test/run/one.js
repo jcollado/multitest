@@ -24,6 +24,10 @@ describe('runTests', function () {
   }
   process.env.NVM_DIR = '<nvm>'
 
+  function requireModule () {
+    return requireInject('../../lib/run/one', stubs)
+  }
+
   beforeEach(function () {
     logger = {
       debug: sinon.spy(),
@@ -43,7 +47,7 @@ describe('runTests', function () {
   it('pulls changes if version directory exists', function () {
     util.exists.resolves()
     util.exec.resolves(defaultCommandOutput)
-    const runTests = requireInject('../../lib/run/one', stubs)
+    const runTests = requireModule()
 
     return expect(runTests('some dir', 'some version'))
       .to.eventually.be.fulfilled.then(function () {
@@ -56,7 +60,7 @@ describe('runTests', function () {
     util.exists.rejects()
     util.mkdir.resolves()
     util.exec.resolves(defaultCommandOutput)
-    const runTests = requireInject('../../lib/run/one', stubs)
+    const runTests = requireModule()
 
     return expect(runTests('some dir', 'some version'))
       .to.eventually.be.fulfilled.then(function () {
@@ -69,7 +73,7 @@ describe('runTests', function () {
   it('runs test cases', function () {
     util.exists.resolves()
     util.exec.resolves(defaultCommandOutput)
-    const runTests = requireInject('../../lib/run/one', stubs)
+    const runTests = requireModule()
 
     return expect(runTests('some dir', 'some version'))
       .to.eventually.be.fulfilled.then(function () {
@@ -82,7 +86,7 @@ describe('runTests', function () {
   it('returns 0 on success', function () {
     util.exists.resolves()
     util.exec.resolves(defaultCommandOutput)
-    const runTests = requireInject('../../lib/run/one', stubs)
+    const runTests = requireModule()
 
     return expect(runTests('some dir', 'some version'))
       .to.eventually.deep.equal({
@@ -99,7 +103,7 @@ describe('runTests', function () {
     util.exec
       .onFirstCall().resolves(defaultCommandOutput)
       .onSecondCall().rejects({message: 'some error', code: 42})
-    const runTests = requireInject('../../lib/run/one', stubs)
+    const runTests = requireModule()
 
     return expect(runTests('some dir', 'some version'))
       .to.eventually.deep.equal({
@@ -114,7 +118,7 @@ describe('runTests', function () {
   it('return 1 if err.code is missing on failure', function () {
     util.exists.rejects()
     util.mkdir.rejects(new Error('some error'))
-    const runTests = requireInject('../../lib/run/one', stubs)
+    const runTests = requireModule()
 
     return expect(runTests('some dir', 'some version'))
       .to.be.eventually.fulfilled.then(function (result) {

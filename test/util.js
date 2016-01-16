@@ -16,6 +16,10 @@ describe('exec', function () {
   let exec
   let stubs
 
+  function requireModule () {
+    return requireInject('../lib/util', stubs)
+  }
+
   beforeEach(function () {
     exec = sinon.stub()
     stubs = {
@@ -27,14 +31,14 @@ describe('exec', function () {
 
   it('rejects if childProcess.exec fails', function () {
     exec.yields('some error')
-    const util = requireInject('../lib/util', stubs)
+    const util = requireModule()
     return expect(util.exec('command'))
       .to.be.eventually.rejectedWith('some error')
   })
 
   it('resolves if childProcess.exec succeeds', function () {
     exec.yields(null, 'stdout', 'stderr')
-    const util = requireInject('../lib/util', stubs)
+    const util = requireModule()
     return expect(util.exec('command')).to.eventually.deep.equal({
       command: 'command',
       stdout: 'stdout',
@@ -47,6 +51,10 @@ describe('exists', function () {
   let exists
   let stubs
 
+  function requireModule () {
+    return requireInject('../lib/util', stubs)
+  }
+
   beforeEach(function () {
     exists = sinon.stub()
     stubs = {
@@ -58,13 +66,13 @@ describe('exists', function () {
 
   it('rejects if fs.exists returns false', function () {
     exists.yields(false)
-    const util = requireInject('../lib/util', stubs)
+    const util = requireModule()
     return expect(util.exists('path')).to.be.eventually.rejected
   })
 
   it('resolves if fs.exists returns true', function () {
     exists.yields(true)
-    const util = requireInject('../lib/util', stubs)
+    const util = requireModule()
     return expect(util.exists('path')).to.be.eventually.fulfilled
   })
 })
