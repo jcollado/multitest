@@ -78,4 +78,19 @@ describe('runAllTests', function () {
 
     return expect(runAllTests(versions)).to.eventually.equal(0)
   })
+
+  it('resolves to 1 on test execution failure', function () {
+    util.exists.resolves()
+    one
+      .onFirstCall().resolves({version: 'some version', returnCode: 1})
+      .onSecondCall().resolves({version: 'another version', returnCode: 1})
+    const runAllTests = requireModule()
+
+    return expect(runAllTests(versions)).to.eventually.be.fulfilled
+      .then(function (returnCode) {
+        expect(returnCode).to.equal(1)
+        expect(logger.error).to.have.been.calledWith(
+          'Test execution failed for: %s', ['some version', 'another version'])
+      })
+  })
 })
