@@ -22,6 +22,7 @@ describe('runAllTests', function () {
   let stubs
 
   const outputDir = '.' + pkg.name
+  const versions = [4, 5]
 
   function requireModule () {
     return requireInject('../../lib/run/all', stubs)
@@ -62,12 +63,19 @@ describe('runAllTests', function () {
     one.resolves({version: 'some version', returnCode: 0})
     const runAllTests = requireModule()
 
-    const versions = [4, 5]
     return expect(runAllTests(versions)).to.eventually.be.fulfilled
     .then(function () {
       versions.forEach(function (version) {
         expect(one).to.have.been.calledWith(outputDir, version)
       })
     })
+  })
+
+  it('resolves to 0 on test execution success', function () {
+    util.exists.resolves()
+    one.resolves({version: 'some version', returnCode: 0})
+    const runAllTests = requireModule()
+
+    return expect(runAllTests(versions)).to.eventually.equal(0)
   })
 })
