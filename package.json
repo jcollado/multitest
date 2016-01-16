@@ -7,11 +7,11 @@
     "multitest": "./multitest.js"
   },
   "scripts": {
-    "cover": "istanbul cover _mocha -- ./test",
-    "coveralls": "istanbul cover --report lcovonly _mocha -- ./test && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
+    "cover": "istanbul cover _mocha -- --recursive ./test",
+    "coveralls": "istanbul cover --report lcovonly _mocha -- --recursive ./test && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "lint": "standard",
     "postversion": "git push && git push --tags && pr-tagger",
-    "test": "mocha ./test"
+    "test": "mocha --recursive ./test"
   },
   "repository": {
     "type": "git",
