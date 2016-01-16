@@ -1,7 +1,7 @@
 {
   "name": "multitest",
   "version": "0.2.0",
-  "description": "Run \"npm test\" using multiple node/io.js versions",
+  "description": "Run \"npm test\" using multiple node versions",
   "main": "multitest.js",
   "bin": {
     "multitest": "./multitest.js"
