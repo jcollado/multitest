@@ -3,4 +3,12 @@ node_js:
 - 5
 - 4
 after_success:
-  - npm run coveralls
+- npm run coveralls
+deploy:
+  provider: npm
+  email: javier.collado@gmail.com
+  api_key:
+    secure: RDy7G37jPkRJmjjOLcG/0eRbWRsFbBllTbPkOb724u+tlHkNkAcaWY4EGtRG1rhZYvWnZi+ACvPr1FeadEX/n2K9ESLz7PvRO0I66wm3QmGRIV/rajosysByNvYZTrznWu57oEDl5QrWlbs0hTFIh78ofaNev7qKIzGjCYXRQ4LUcYBwpNJ7f8Tqr84RvjGNcGSUkxlPE7LW7Os9AnV5QTis6IRPXeAMnYrZSzfGuzQskKR4KA8HZ0SVQjSrv3bX2ClU0ZQlXQDgZWdVxwyOMtwUvoCt3etPhno+bS7uJOlQnViTRbksIn+99kniZJDlW3kc5z9dNaoVfGY22t+wP2IzdbWy2hmE5nBl6zmQET4owEL1kWVqqoYD0slROD0XBUozT6GpzrXqoxm2OxEdfoxKV8stSRNH429e+hTH6QVLALzIzeDgPeZ0bh54j7I46ZSxwU5AzBs7dxNpBSRti58ph20ty/F954mjlcar6bshzvHeAAfwdUW+zcLBA+2/Nf8uTnoazPUiHy+8OJprsPXywePZ2VWZiQA9u515w7If3dZzBMh8Ir4cCrZiE6PhZ/qhrOl0AIUbklBIeTaqCo7AZTN5GchVSIloEp6KivXt+62nYmOvqRqGHlTF8uR1NLRFZ2TKtWvXk37Um510dUdGkGheemuagENOZefNV+g=
+  on:
+    tags: true
+    repo: jcollado/multitest
