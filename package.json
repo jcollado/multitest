@@ -10,7 +10,7 @@
     "cover": "istanbul cover _mocha -- --recursive ./test",
     "coveralls": "istanbul cover --report lcovonly _mocha -- --recursive ./test && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "lint": "standard",
-    "postversion": "git push && git push --tags && pr-tagger",
+    "postversion": "git push --follow-tags",
     "pretest": "npm run lint",
     "test": "mocha --recursive ./test"
   },
