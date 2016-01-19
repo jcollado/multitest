@@ -12,3 +12,8 @@ deploy:
   on:
     tags: true
     repo: jcollado/multitest
+after_deploy:
+- pr-tagger --log-level debug --access-token ${GH_TOKEN}
+env:
+  global:
+    secure: YM6uEOp7gSue1pInpjEpx4zCXEzB6VTgz58otVsPAX/TueVlRlFwLn4rd02Xm09cnkjcIrBRlELbMZGVju+I/+bOIpzqTc9ebmLVjkgOyr0fONJAGbCPpu61nbCv/1ZoXEu/WruBOFlmTIelqv1dZp/LchgV0Zsq8zLa6l9gtaa5d/sw8Xfv28DqsUEI+r5rXSjDz16LEnDSwadF/5/WWTNaLPETwKQmGoeyk0Ck71JEVFRcpOGSK8BsGMndKlGnJTBQgpsFe/URjZGjb1ydM5g31h5L6ZPmYeuPIO29Wzz/Gcqh3EMHXO/nvL99BvW4fGyY/JZu5ZeRKu7bI5DUSHvyCN2FziN124EtWKrr2E9KnB7/9KcQ8WoukxN3AbiYMNk79ET/92YY8e+8FF/w2VEsic6ACMyjz+fpfjnid+8su+z5oIi7eAb+AjyQOrpxXwAriqwd1lKT7+1hU4c0zCdERR7uX8zVQSq4s8WOrtczXOIvWzYXia9Np7GnfN4xU5UyckS5fZcnX/cJxRh8D6MJwnBIzC8HPF8M7ZeAAIbNX7lbQwn2ES6DOhw83TC+9KDlVFwkeEGZmqUHPPR6DWeoym8MRrUAmBKJWKEyxiEUzLe2WeVf904eZm6Erj+V94mHq2uODD+my0NRsF4rgNz8vu4x3QfdUMtrHIsArQo=
