@@ -46,13 +46,18 @@ describe('runTests', function () {
 
   it('pulls changes if version directory exists', function () {
     util.exists.resolves()
-    util.exec.resolves(defaultCommandOutput)
+    util.exec.onFirstCall().resolves({
+      command: 'command',
+      stdout: '<branch>',
+      stderr: ''
+    })
+    util.exec.onSecondCall().resolves(defaultCommandOutput)
     const runTests = requireModule()
 
     return expect(runTests('some dir', 'some version'))
       .to.eventually.be.fulfilled.then(function () {
         expect(util.exec).to.have.been.calledWith(
-          'git pull', {cwd: 'some dir/some version'})
+          'git fetch && git checkout <branch> && git pull', {shell: '/bin/bash', cwd: 'some dir/some version'})
       })
   })
 
