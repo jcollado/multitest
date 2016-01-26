@@ -57,7 +57,7 @@ describe('runTests', function () {
     return expect(runTests('some dir', 'some version'))
       .to.eventually.be.fulfilled.then(function () {
         expect(util.exec).to.have.been.calledWith(
-          'git fetch && git checkout <branch> && git pull', {shell: '/bin/bash', cwd: 'some dir/some version'})
+          'git fetch && git checkout --force <branch> && git reset --hard origin/<branch> && git pull', {shell: '/bin/bash', cwd: 'some dir/some version'})
       })
   })
 
