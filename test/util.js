@@ -59,7 +59,9 @@ describe('exists', function () {
     exists = sinon.stub()
     stubs = {
       fs: {
-        exists
+        exists,
+        mkdir: sinon.stub(),
+        readFile: sinon.stub()
       }
     }
   })
