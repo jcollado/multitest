@@ -83,7 +83,7 @@ describe('runTests', function () {
     return expect(runTests('some dir', 'some version'))
       .to.eventually.be.fulfilled.then(function () {
         expect(util.exec).to.have.been.calledWith(
-        'source <nvm>/nvm.sh && nvm use some version && npm install && npm test',
+        'source <nvm>/nvm.sh && nvm use some version && npm prune && npm install && npm test',
         {cwd: 'some dir/some version', shell: '/bin/bash'})
       })
   })
