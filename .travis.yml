@@ -12,6 +12,7 @@ deploy:
   on:
     tags: true
     repo: jcollado/multitest
+    node: '5'
 after_deploy:
 - pr-tagger --log-level debug --access-token ${GH_TOKEN}
 env:
