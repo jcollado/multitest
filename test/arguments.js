@@ -1,32 +1,28 @@
-/* global describe it */
-import chai from 'chai'
-const expect = chai.expect
+import test from 'ava'
 
 import {parseArguments} from '../src/arguments'
 
-describe('parseArguments', function () {
-  const defaults = {
-    version: 'some version',
-    description: 'some description',
-    logLevel: 'some log level'
+const defaults = {
+  version: 'some version',
+  description: 'some description',
+  logLevel: 'some log level'
+}
+
+test('parseArguments uses defaults', t => {
+  const program = parseArguments(defaults, [])
+  t.is(program.version(), defaults.version)
+  t.is(program.description(), defaults.description)
+  t.is(program.logLevel, defaults.logLevel)
+})
+
+test('parseArguments parses arguments as expected', t => {
+  const expected = {
+    logLevel: 'debug'
   }
+  const program = parseArguments(
+    defaults, ['<node binary>', '<script>',
+      '-l', expected.logLevel
+    ])
 
-  it('uses defaults', function () {
-    const program = parseArguments(defaults, [])
-    expect(program.version()).to.equal(defaults.version)
-    expect(program.description()).to.equal(defaults.description)
-    expect(program).to.have.property('logLevel', defaults.logLevel)
-  })
-
-  it('parses arguments as expected', function () {
-    const expected = {
-      logLevel: 'debug'
-    }
-    const program = parseArguments(
-      defaults, ['<node binary>', '<script>',
-        '-l', expected.logLevel
-      ])
-
-    expect(program).to.have.property('logLevel', expected.logLevel)
-  })
+  t.is(program.logLevel, expected.logLevel)
 })

@@ -1,13 +1,13 @@
 import {logger} from '../logging'
 import one from './one'
 import pkg from '../../package'
-import util from '../util'
+import {exists, mkdir} from '../util'
 
 export default function runAllTests (versions) {
   const outputDir = '.' + pkg.name
-  return util.exists(outputDir)
+  return exists(outputDir)
   .catch(function () {
-    const dirPromise = util.mkdir(outputDir)
+    const dirPromise = mkdir(outputDir)
     dirPromise.then(function () {
       logger.debug('Directory created: %s', outputDir)
     })

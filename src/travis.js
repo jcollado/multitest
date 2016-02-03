@@ -3,17 +3,17 @@ import path from 'path'
 import yaml from 'js-yaml'
 
 import {logger} from './logging'
-import util from './util'
+import {exists, readFile} from './util'
 
 export default function parse () {
   const travisFile = path.join(process.cwd(), '.travis.yml')
-  return util.exists(travisFile)
+  return exists(travisFile)
     .catch(function () {
       logger.error('Travis file not found: %s', travisFile)
       return Promise.reject()
     })
     .then(function () {
-      return util.readFile(travisFile)
+      return readFile(travisFile)
     })
     .then(function (data) {
       const travisConfig = yaml.safeLoad(data)
