@@ -1,17 +1,9 @@
-import chai from 'chai'
-import chaiAsPromised from 'chai-as-promised'
 import requireInject from 'require-inject'
 import sinon from 'sinon'
-import sinonChai from 'sinon-chai'
 import 'sinon-as-promised'
 import test from 'ava'
 
-chai.use(chaiAsPromised)
-chai.use(sinonChai)
-
 import pkg from '../../package'
-
-const expect = chai.expect
 
 const outputDir = '.' + pkg.name
 const versions = [4, 5]
@@ -40,12 +32,10 @@ test('runAllTests makes directory if it does not exist', t => {
   util.exists.rejects()
   util.mkdir.resolves()
 
-  return expect(runAllTests([])).to.eventually.be.fulfilled
-    .then(function () {
-      expect(util.mkdir).to.have.been.calledWith(outputDir)
-      expect(logger.debug).to.have.been.calledWith(
-        'Directory created: %s', outputDir)
-    })
+  return runAllTests([]).then(() => {
+    t.true(util.mkdir.calledWith(outputDir))
+    t.true(logger.debug.calledWith('Directory created: %s', outputDir))
+  })
 })
 
 test('runAllTests runs tests for each version', t => {
@@ -53,10 +43,9 @@ test('runAllTests runs tests for each version', t => {
   util.exists.resolves()
   one.resolves({version: 'some version', returnCode: 0})
 
-  return expect(runAllTests(versions)).to.eventually.be.fulfilled
-  .then(function () {
+  return runAllTests(versions).then(() => {
     versions.forEach(function (version) {
-      expect(one).to.have.been.calledWith(outputDir, version)
+      t.true(one.calledWith(outputDir, version))
     })
   })
 })
@@ -66,7 +55,7 @@ test('runAllTests resolves to 0 on test execution success', t => {
   util.exists.resolves()
   one.resolves({version: 'some version', returnCode: 0})
 
-  return expect(runAllTests(versions)).to.eventually.equal(0)
+  return runAllTests(versions).then(returnCode => t.is(returnCode, 0))
 })
 
 test('runAllTests resolves to 1 on test execution failure', t => {
@@ -76,10 +65,9 @@ test('runAllTests resolves to 1 on test execution failure', t => {
     .onFirstCall().resolves({version: 'some version', returnCode: 1})
     .onSecondCall().resolves({version: 'another version', returnCode: 1})
 
-  return expect(runAllTests(versions)).to.eventually.be.fulfilled
-    .then(function (returnCode) {
-      expect(returnCode).to.equal(1)
-      expect(logger.error).to.have.been.calledWith(
-        'Test execution failed for: %s', ['some version', 'another version'])
-    })
+  return runAllTests(versions).then(function (returnCode) {
+    t.is(returnCode, 1)
+    t.true(logger.error.calledWith(
+      'Test execution failed for: %s', ['some version', 'another version']))
+  })
 })
