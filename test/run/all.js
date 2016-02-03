@@ -1,10 +1,11 @@
-/* global describe it beforeEach */
+import 'babel-register'
 import chai from 'chai'
 import chaiAsPromised from 'chai-as-promised'
 import requireInject from 'require-inject'
 import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
-require('sinon-as-promised')
+import 'sinon-as-promised'
+import test from 'ava'
 
 chai.use(chaiAsPromised)
 chai.use(sinonChai)
@@ -13,82 +14,73 @@ import pkg from '../../package'
 
 const expect = chai.expect
 
-describe('runAllTests', function () {
-  let logger
-  let one
-  let util
-  let stubs
+const outputDir = '.' + pkg.name
+const versions = [4, 5]
 
-  const outputDir = '.' + pkg.name
-  const versions = [4, 5]
-
-  function requireModule () {
-    return requireInject('../../src/run/all', stubs).default
+test.beforeEach(t => {
+  const logger = {
+    debug: sinon.spy(),
+    info: sinon.spy(),
+    error: sinon.spy()
   }
+  const one = sinon.stub()
+  const util = {
+    exists: sinon.stub(),
+    mkdir: sinon.stub()
+  }
+  const stubs = {}
+  stubs[require.resolve('../../src/logging')] = {logger}
+  stubs[require.resolve('../../src/run/one')] = one
+  stubs[require.resolve('../../src/util')] = util
+  const runAllTests = requireInject('../../src/run/all', stubs).default
+  t.context = {logger, one, runAllTests, util}
+})
 
-  beforeEach(function () {
-    logger = {
-      debug: sinon.spy(),
-      info: sinon.spy(),
-      error: sinon.spy()
-    }
-    one = sinon.stub()
-    util = {
-      exists: sinon.stub(),
-      mkdir: sinon.stub()
-    }
-    stubs = {}
-    stubs[require.resolve('../../src/logging')] = {logger}
-    stubs[require.resolve('../../src/run/one')] = one
-    stubs[require.resolve('../../src/util')] = util
-  })
+test('runAllTests makes directory if it does not exist', t => {
+  const {logger, runAllTests, util} = t.context
+  util.exists.rejects()
+  util.mkdir.resolves()
 
-  it('makes directory if it does not exist', function () {
-    util.exists.rejects()
-    util.mkdir.resolves()
-    const runAllTests = requireModule()
-
-    return expect(runAllTests([])).to.eventually.be.fulfilled
-      .then(function () {
-        expect(util.mkdir).to.have.been.calledWith(outputDir)
-        expect(logger.debug).to.have.been.calledWith(
-          'Directory created: %s', outputDir)
-      })
-  })
-
-  it('runs tests for each version', function () {
-    util.exists.resolves()
-    one.resolves({version: 'some version', returnCode: 0})
-    const runAllTests = requireModule()
-
-    return expect(runAllTests(versions)).to.eventually.be.fulfilled
+  return expect(runAllTests([])).to.eventually.be.fulfilled
     .then(function () {
-      versions.forEach(function (version) {
-        expect(one).to.have.been.calledWith(outputDir, version)
-      })
+      expect(util.mkdir).to.have.been.calledWith(outputDir)
+      expect(logger.debug).to.have.been.calledWith(
+        'Directory created: %s', outputDir)
+    })
+})
+
+test('runAllTests runs tests for each version', t => {
+  const {one, runAllTests, util} = t.context
+  util.exists.resolves()
+  one.resolves({version: 'some version', returnCode: 0})
+
+  return expect(runAllTests(versions)).to.eventually.be.fulfilled
+  .then(function () {
+    versions.forEach(function (version) {
+      expect(one).to.have.been.calledWith(outputDir, version)
     })
   })
+})
 
-  it('resolves to 0 on test execution success', function () {
-    util.exists.resolves()
-    one.resolves({version: 'some version', returnCode: 0})
-    const runAllTests = requireModule()
+test('runAllTests resolves to 0 on test execution success', t => {
+  const {one, runAllTests, util} = t.context
+  util.exists.resolves()
+  one.resolves({version: 'some version', returnCode: 0})
 
-    return expect(runAllTests(versions)).to.eventually.equal(0)
-  })
+  return expect(runAllTests(versions)).to.eventually.equal(0)
+})
 
-  it('resolves to 1 on test execution failure', function () {
-    util.exists.resolves()
-    one
-      .onFirstCall().resolves({version: 'some version', returnCode: 1})
-      .onSecondCall().resolves({version: 'another version', returnCode: 1})
-    const runAllTests = requireModule()
+test('runAllTests resolves to 1 on test execution failure', t => {
+  const {logger, one, runAllTests, util} = t.context
+  util.exists.resolves()
+  one
+    .onFirstCall().resolves({version: 'some version', returnCode: 1})
+    .onSecondCall().resolves({version: 'another version', returnCode: 1})
 
-    return expect(runAllTests(versions)).to.eventually.be.fulfilled
-      .then(function (returnCode) {
-        expect(returnCode).to.equal(1)
-        expect(logger.error).to.have.been.calledWith(
-          'Test execution failed for: %s', ['some version', 'another version'])
-      })
-  })
+  return expect(runAllTests(versions)).to.eventually.be.fulfilled
+    .then(function (returnCode) {
+      expect(returnCode).to.equal(1)
+      expect(logger.error).to.have.been.calledWith(
+        'Test execution failed for: %s', ['some version', 'another version'])
+    })
 })

@@ -1,11 +1,11 @@
-/* global describe it */
+import 'babel-register'
 import chai from 'chai'
+import test from 'ava'
+
 const expect = chai.expect
 
 import {logger} from '../src/logging'
 
-describe('logger', function () {
-  it('writes to console', function () {
-    expect(logger).to.have.deep.property('transports.console')
-  })
+test('logger writes to console', function () {
+  expect(logger).to.have.deep.property('transports.console')
 })
