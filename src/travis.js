@@ -1,13 +1,11 @@
-'use strict'
+import path from 'path'
 
-const path = require('path')
+import yaml from 'js-yaml'
 
-const yaml = require('js-yaml')
+import {logger} from './logging'
+import util from './util'
 
-const logger = require('./logging').logger
-const util = require('./util')
-
-function parse () {
+export default function parse () {
   const travisFile = path.join(process.cwd(), '.travis.yml')
   return util.exists(travisFile)
     .catch(function () {
@@ -39,5 +37,3 @@ function parse () {
       return Promise.resolve(travisConfig.node_js)
     })
 }
-
-module.exports = parse
