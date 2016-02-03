@@ -1,17 +1,9 @@
-import chai from 'chai'
-import chaiAsPromised from 'chai-as-promised'
 import requireInject from 'require-inject'
 import sinon from 'sinon'
-import sinonChai from 'sinon-chai'
 import 'sinon-as-promised'
 import test from 'ava'
 
-chai.use(chaiAsPromised)
-chai.use(sinonChai)
-
 import pkg from '../package'
-
-const expect = chai.expect
 
 test.beforeEach(t => {
   const logger = {
@@ -35,25 +27,23 @@ test('main logs program version information', t => {
   travis.resolves()
   run.resolves(0)
 
-  return expect(main()).to.be.eventually.fulfilled
-    .then(function () {
-      expect(logger.info).to.have.been.calledWith(
-        '%s v%s', pkg.name, pkg.version)
-    })
+  return main().then(function () {
+    t.true(logger.info.calledWith('%s v%s', pkg.name, pkg.version))
+  })
 })
 
 test('main resolves to test results on success', t => {
   const {main, run, travis} = t.context
   travis.resolves()
-  const returnCode = 42
-  run.resolves(returnCode)
+  const expected = 42
+  run.resolves(expected)
 
-  return expect(main()).to.eventually.equal(returnCode)
+  return main().then(returnCode => t.is(returnCode, expected))
 })
 
 test('main resolves to 1 on travis parsing error', t => {
   const {main, travis} = t.context
   travis.rejects()
 
-  return expect(main()).to.eventually.equal(1)
+  return main().then(returnCode => t.is(returnCode, 1))
 })
