@@ -1,12 +1,10 @@
-'use strict'
+import {logger} from './logging'
+import {parseArguments} from './arguments'
+import pkg from '../package'
+import run from './run/all'
+import travis from './travis'
 
-const logger = require('./logging').logger
-const parseArguments = require('./arguments').parseArguments
-const pkg = require('../package')
-const run = require('./run/all')
-const travis = require('./travis')
-
-function main () {
+export default function main () {
   const defaults = {
     name: pkg.name,
     version: pkg.version,
@@ -23,5 +21,3 @@ function main () {
       return Promise.resolve(1)
     })
 }
-
-module.exports = main

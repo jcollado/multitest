@@ -1,17 +1,15 @@
 /* global describe it beforeEach */
-'use strict'
-
-const chai = require('chai')
-const chaiAsPromised = require('chai-as-promised')
-const requireInject = require('require-inject')
-const sinon = require('sinon')
-const sinonChai = require('sinon-chai')
+import chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
+import requireInject from 'require-inject'
+import sinon from 'sinon'
+import sinonChai from 'sinon-chai'
 require('sinon-as-promised')
 
 chai.use(chaiAsPromised)
 chai.use(sinonChai)
 
-const pkg = require('../package')
+import pkg from '../package'
 
 const expect = chai.expect
 
@@ -23,7 +21,7 @@ describe('main', function () {
   let stubs
 
   function requireModule () {
-    return requireInject('../lib/main', stubs)
+    return requireInject('../src/main', stubs).default
   }
 
   beforeEach(function () {
@@ -34,10 +32,10 @@ describe('main', function () {
     travis = sinon.stub()
     run = sinon.stub()
     stubs = {}
-    stubs[require.resolve('../lib/arguments')] = {parseArguments}
-    stubs[require.resolve('../lib/logging')] = {logger}
-    stubs[require.resolve('../lib/run/all')] = run
-    stubs[require.resolve('../lib/travis')] = travis
+    stubs[require.resolve('../src/arguments')] = {parseArguments}
+    stubs[require.resolve('../src/logging')] = {logger}
+    stubs[require.resolve('../src/run/all')] = run
+    stubs[require.resolve('../src/travis')] = travis
   })
 
   it('logs program version information', function () {

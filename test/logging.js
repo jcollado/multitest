@@ -1,10 +1,8 @@
 /* global describe it */
-'use strict'
-
-const chai = require('chai')
+import chai from 'chai'
 const expect = chai.expect
 
-const logger = require('../lib/logging').logger
+import {logger} from '../src/logging'
 
 describe('logger', function () {
   it('writes to console', function () {

@@ -1,9 +1,10 @@
-'use strict'
+import childProcess from 'child_process'
+import fs from 'fs'
 
-const childProcess = require('child_process')
-const fs = require('fs')
+import promisify from 'promisify-function'
 
-const promisify = require('promisify-function').default
+const mkdir = promisify(fs.mkdir)
+const readFile = promisify(fs.readFile)
 
 function exec (command, options) {
   return new Promise(function (resolve, reject) {
@@ -29,9 +30,4 @@ function exists (path) {
   })
 }
 
-module.exports = {
-  exec,
-  exists,
-  mkdir: promisify(fs.mkdir),
-  readFile: promisify(fs.readFile)
-}
+export { exec, exists, mkdir, readFile }

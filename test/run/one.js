@@ -1,11 +1,9 @@
 /* global describe it beforeEach */
-'use strict'
-
-const chai = require('chai')
-const chaiAsPromised = require('chai-as-promised')
-const requireInject = require('require-inject')
-const sinon = require('sinon')
-const sinonChai = require('sinon-chai')
+import chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
+import requireInject from 'require-inject'
+import sinon from 'sinon'
+import sinonChai from 'sinon-chai'
 require('sinon-as-promised')
 
 chai.use(chaiAsPromised)
@@ -25,7 +23,7 @@ describe('runTests', function () {
   process.env.NVM_DIR = '<nvm>'
 
   function requireModule () {
-    return requireInject('../../lib/run/one', stubs)
+    return requireInject('../../src/run/one', stubs).default
   }
 
   beforeEach(function () {
@@ -40,8 +38,8 @@ describe('runTests', function () {
       mkdir: sinon.stub()
     }
     stubs = {}
-    stubs[require.resolve('../../lib/logging')] = {logger}
-    stubs[require.resolve('../../lib/util')] = util
+    stubs[require.resolve('../../src/logging')] = {logger}
+    stubs[require.resolve('../../src/util')] = util
   })
 
   it('pulls changes if version directory exists', function () {

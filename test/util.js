@@ -1,11 +1,9 @@
 /* global describe it beforeEach */
-'use strict'
-
-const chai = require('chai')
-const chaiAsPromised = require('chai-as-promised')
-const requireInject = require('require-inject')
-const sinon = require('sinon')
-const sinonChai = require('sinon-chai')
+import chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
+import requireInject from 'require-inject'
+import sinon from 'sinon'
+import sinonChai from 'sinon-chai'
 
 chai.use(chaiAsPromised)
 chai.use(sinonChai)
@@ -17,7 +15,7 @@ describe('exec', function () {
   let stubs
 
   function requireModule () {
-    return requireInject('../lib/util', stubs)
+    return requireInject('../src/util', stubs)
   }
 
   beforeEach(function () {
@@ -52,7 +50,7 @@ describe('exists', function () {
   let stubs
 
   function requireModule () {
-    return requireInject('../lib/util', stubs)
+    return requireInject('../src/util', stubs)
   }
 
   beforeEach(function () {

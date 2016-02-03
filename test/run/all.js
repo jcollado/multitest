@@ -1,17 +1,15 @@
 /* global describe it beforeEach */
-'use strict'
-
-const chai = require('chai')
-const chaiAsPromised = require('chai-as-promised')
-const requireInject = require('require-inject')
-const sinon = require('sinon')
-const sinonChai = require('sinon-chai')
+import chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
+import requireInject from 'require-inject'
+import sinon from 'sinon'
+import sinonChai from 'sinon-chai'
 require('sinon-as-promised')
 
 chai.use(chaiAsPromised)
 chai.use(sinonChai)
 
-const pkg = require('../../package')
+import pkg from '../../package'
 
 const expect = chai.expect
 
@@ -25,7 +23,7 @@ describe('runAllTests', function () {
   const versions = [4, 5]
 
   function requireModule () {
-    return requireInject('../../lib/run/all', stubs)
+    return requireInject('../../src/run/all', stubs).default
   }
 
   beforeEach(function () {
@@ -40,9 +38,9 @@ describe('runAllTests', function () {
       mkdir: sinon.stub()
     }
     stubs = {}
-    stubs[require.resolve('../../lib/logging')] = {logger}
-    stubs[require.resolve('../../lib/run/one')] = one
-    stubs[require.resolve('../../lib/util')] = util
+    stubs[require.resolve('../../src/logging')] = {logger}
+    stubs[require.resolve('../../src/run/one')] = one
+    stubs[require.resolve('../../src/util')] = util
   })
 
   it('makes directory if it does not exist', function () {
