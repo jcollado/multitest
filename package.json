@@ -7,6 +7,7 @@
     "multitest": "./multitest.js"
   },
   "scripts": {
+    "build": "babel -d lib src",
     "cover": "istanbul cover _mocha -- --recursive ./test",
     "coveralls": "istanbul cover --report lcovonly _mocha -- --recursive ./test && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "lint": "standard",
@@ -32,6 +33,8 @@
   },
   "homepage": "https://github.com/jcollado/multitest#readme",
   "devDependencies": {
+    "babel-cli": "6.4.5",
+    "babel-preset-es2015-node4": "2.0.3",
     "babel-register": "6.4.3",
     "chai": "3.5.0",
     "chai-as-promised": "5.2.0",
@@ -57,5 +60,8 @@
       "pre-commit": "npm test",
       "pre-push": "multitest"
     }
+  },
+  "babel": {
+    "presets": ["es2015-node4"]
   }
 }
