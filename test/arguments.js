@@ -1,7 +1,4 @@
-import chai from 'chai'
 import test from 'ava'
-
-const expect = chai.expect
 
 import {parseArguments} from '../src/arguments'
 
@@ -11,14 +8,14 @@ const defaults = {
   logLevel: 'some log level'
 }
 
-test('parseArguments uses defaults', () => {
+test('parseArguments uses defaults', t => {
   const program = parseArguments(defaults, [])
-  expect(program.version()).to.equal(defaults.version)
-  expect(program.description()).to.equal(defaults.description)
-  expect(program).to.have.property('logLevel', defaults.logLevel)
+  t.is(program.version(), defaults.version)
+  t.is(program.description(), defaults.description)
+  t.is(program.logLevel, defaults.logLevel)
 })
 
-test('parseArguments parses arguments as expected', () => {
+test('parseArguments parses arguments as expected', t => {
   const expected = {
     logLevel: 'debug'
   }
@@ -27,5 +24,5 @@ test('parseArguments parses arguments as expected', () => {
       '-l', expected.logLevel
     ])
 
-  expect(program).to.have.property('logLevel', expected.logLevel)
+  t.is(program.logLevel, expected.logLevel)
 })
