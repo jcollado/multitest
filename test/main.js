@@ -23,7 +23,7 @@ describe('main', function () {
   let stubs
 
   function requireModule () {
-    return requireInject('../src/main', stubs)
+    return requireInject('../src/main', stubs).default
   }
 
   beforeEach(function () {
