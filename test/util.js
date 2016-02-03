@@ -17,7 +17,7 @@ describe('exec', function () {
   let stubs
 
   function requireModule () {
-    return requireInject('../lib/util', stubs)
+    return requireInject('../src/util', stubs)
   }
 
   beforeEach(function () {
@@ -52,7 +52,7 @@ describe('exists', function () {
   let stubs
 
   function requireModule () {
-    return requireInject('../lib/util', stubs)
+    return requireInject('../src/util', stubs)
   }
 
   beforeEach(function () {

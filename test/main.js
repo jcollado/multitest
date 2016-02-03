@@ -23,7 +23,7 @@ describe('main', function () {
   let stubs
 
   function requireModule () {
-    return requireInject('../lib/main', stubs)
+    return requireInject('../src/main', stubs)
   }
 
   beforeEach(function () {
@@ -34,10 +34,10 @@ describe('main', function () {
     travis = sinon.stub()
     run = sinon.stub()
     stubs = {}
-    stubs[require.resolve('../lib/arguments')] = {parseArguments}
-    stubs[require.resolve('../lib/logging')] = {logger}
-    stubs[require.resolve('../lib/run/all')] = run
-    stubs[require.resolve('../lib/travis')] = travis
+    stubs[require.resolve('../src/arguments')] = {parseArguments}
+    stubs[require.resolve('../src/logging')] = {logger}
+    stubs[require.resolve('../src/run/all')] = run
+    stubs[require.resolve('../src/travis')] = travis
   })
 
   it('logs program version information', function () {

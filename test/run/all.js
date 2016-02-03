@@ -25,7 +25,7 @@ describe('runAllTests', function () {
   const versions = [4, 5]
 
   function requireModule () {
-    return requireInject('../../lib/run/all', stubs)
+    return requireInject('../../src/run/all', stubs)
   }
 
   beforeEach(function () {
@@ -40,9 +40,9 @@ describe('runAllTests', function () {
       mkdir: sinon.stub()
     }
     stubs = {}
-    stubs[require.resolve('../../lib/logging')] = {logger}
-    stubs[require.resolve('../../lib/run/one')] = one
-    stubs[require.resolve('../../lib/util')] = util
+    stubs[require.resolve('../../src/logging')] = {logger}
+    stubs[require.resolve('../../src/run/one')] = one
+    stubs[require.resolve('../../src/util')] = util
   })
 
   it('makes directory if it does not exist', function () {

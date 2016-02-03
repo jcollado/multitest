@@ -19,7 +19,7 @@ describe('travis.parse', function () {
   let util
 
   function requireModule () {
-    return requireInject('../lib/travis', stubs)
+    return requireInject('../src/travis', stubs)
   }
 
   beforeEach(function () {
@@ -32,10 +32,10 @@ describe('travis.parse', function () {
       info: sinon.spy(),
       error: sinon.spy()
     }
-    stubs[require.resolve('../lib/logging')] = {logger}
+    stubs[require.resolve('../src/logging')] = {logger}
 
     util = {}
-    stubs[require.resolve('../lib/util')] = util
+    stubs[require.resolve('../src/util')] = util
   })
 
   it('rejects if file is not found', function () {

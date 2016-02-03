@@ -4,7 +4,7 @@
 const chai = require('chai')
 const expect = chai.expect
 
-const logger = require('../lib/logging').logger
+const logger = require('../src/logging').logger
 
 describe('logger', function () {
   it('writes to console', function () {
