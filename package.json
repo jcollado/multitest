@@ -12,7 +12,7 @@
     "lint": "standard",
     "postversion": "git push --follow-tags",
     "pretest": "npm run lint",
-    "test": "mocha --recursive ./test"
+    "test": "mocha --compilers js:babel-register --recursive ./test"
   },
   "repository": {
     "type": "git",
@@ -32,6 +32,7 @@
   },
   "homepage": "https://github.com/jcollado/multitest#readme",
   "devDependencies": {
+    "babel-register": "6.4.3",
     "chai": "3.5.0",
     "chai-as-promised": "5.2.0",
     "coveralls": "2.11.6",
