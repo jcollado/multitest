@@ -12,6 +12,7 @@
     "coveralls": "istanbul cover --report lcovonly _mocha -- --recursive ./test && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "lint": "standard",
     "postversion": "git push --follow-tags",
+    "prepublish": "npm run build",
     "pretest": "npm run lint",
     "test": "mocha --compilers js:babel-register --recursive ./test"
   },
