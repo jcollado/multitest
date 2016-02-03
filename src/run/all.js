@@ -1,11 +1,9 @@
-'use strict'
+import {logger} from '../logging'
+import one from './one'
+import pkg from '../../package'
+import util from '../util'
 
-const logger = require('../logging').logger
-const pkg = require('../../package')
-const util = require('../util')
-const one = require('./one')
-
-function runAllTests (versions) {
+export default function runAllTests (versions) {
   const outputDir = '.' + pkg.name
   return util.exists(outputDir)
   .catch(function () {
@@ -34,5 +32,3 @@ function runAllTests (versions) {
     return Promise.resolve(0)
   })
 }
-
-module.exports = runAllTests
