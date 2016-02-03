@@ -19,7 +19,7 @@ describe('travis.parse', function () {
   let util
 
   function requireModule () {
-    return requireInject('../src/travis', stubs)
+    return requireInject('../src/travis', stubs).default
   }
 
   beforeEach(function () {
