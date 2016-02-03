@@ -1,15 +1,7 @@
-import chai from 'chai'
-import chaiAsPromised from 'chai-as-promised'
 import requireInject from 'require-inject'
 import sinon from 'sinon'
-import sinonChai from 'sinon-chai'
 import 'sinon-as-promised'
 import test from 'ava'
-
-chai.use(chaiAsPromised)
-chai.use(sinonChai)
-
-const expect = chai.expect
 
 const defaultCommandOutput = {
   command: 'command',
@@ -45,13 +37,13 @@ test('pulls changes if version directory exists', t => {
     stdout: '<branch>',
     stderr: ''
   })
-  util.exec.onSecondCall().resolves(defaultCommandOutput)
+  util.exec.resolves(defaultCommandOutput)
 
-  return expect(runTests('some dir', 'some version'))
-    .to.eventually.be.fulfilled.then(function () {
-      expect(util.exec).to.have.been.calledWith(
-        'git fetch && git checkout --force <branch> && git reset --hard origin/<branch> && git pull', {shell: '/bin/bash', cwd: 'some dir/some version'})
-    })
+  return runTests('some dir', 'some version').then(() => {
+    t.true(util.exec.calledWith(
+      'git fetch && git checkout --force <branch> && git reset --hard origin/<branch> && git pull',
+      {shell: '/bin/bash', cwd: 'some dir/some version'}))
+  })
 })
 
 test('makes directory and clones if version directory does not exist', t => {
@@ -60,12 +52,10 @@ test('makes directory and clones if version directory does not exist', t => {
   util.mkdir.resolves()
   util.exec.resolves(defaultCommandOutput)
 
-  return expect(runTests('some dir', 'some version'))
-    .to.eventually.be.fulfilled.then(function () {
-      expect(util.mkdir).to.have.been.calledWith('some dir/some version')
-      expect(util.exec).to.have.been.calledWith(
-        'git clone . some dir/some version')
-    })
+  return runTests('some dir', 'some version').then(() => {
+    t.true(util.mkdir.calledWith('some dir/some version'))
+    t.true(util.exec.calledWith('git clone . some dir/some version'))
+  })
 })
 
 test('runs test cases', t => {
@@ -73,12 +63,11 @@ test('runs test cases', t => {
   util.exists.resolves()
   util.exec.resolves(defaultCommandOutput)
 
-  return expect(runTests('some dir', 'some version'))
-    .to.eventually.be.fulfilled.then(function () {
-      expect(util.exec).to.have.been.calledWith(
+  return runTests('some dir', 'some version').then(() => {
+    t.true(util.exec.calledWith(
       'source <nvm>/nvm.sh && nvm use some version && npm prune && npm install && npm test',
-      {cwd: 'some dir/some version', shell: '/bin/bash'})
-    })
+      {cwd: 'some dir/some version', shell: '/bin/bash'}))
+  })
 })
 
 test('returns 0 on success', t => {
@@ -86,30 +75,30 @@ test('returns 0 on success', t => {
   util.exists.resolves()
   util.exec.resolves(defaultCommandOutput)
 
-  return expect(runTests('some dir', 'some version'))
-    .to.eventually.deep.equal({
+  return runTests('some dir', 'some version').then(result => {
+    t.same(result, {
       version: 'some version',
       returnCode: 0
-    }).then(function () {
-      expect(logger.info).to.have.been.calledWith(
-        '[%s] Test case execution success', 'some version')
     })
+    t.true(logger.info.calledWith(
+      '[%s] Test case execution success', 'some version'))
+  })
 })
 
-test.only('returns err.code on failure', t => {
+test('returns err.code on failure', t => {
   const {logger, runTests, util} = t.context
   util.exists.resolves()
   util.exec
     .onFirstCall().rejects({message: 'some error', code: 42})
 
-  return expect(runTests('some dir', 'some version'))
-    .to.eventually.deep.equal({
+  return runTests('some dir', 'some version').then(result => {
+    t.same(result, {
       version: 'some version',
       returnCode: 42
-    }).then(function () {
-      expect(logger.error).to.have.been.calledWith(
-        '[%s] %s', 'some version', 'some error')
     })
+    t.true(logger.error.calledWith(
+      '[%s] %s', 'some version', 'some error'))
+  })
 })
 
 test('return 1 if err.code is missing on failure', t => {
@@ -117,13 +106,11 @@ test('return 1 if err.code is missing on failure', t => {
   util.exists.rejects()
   util.mkdir.rejects(new Error('some error'))
 
-  return expect(runTests('some dir', 'some version'))
-    .to.be.eventually.fulfilled.then(function (result) {
-      expect(result).to.deep.equal({
-        version: 'some version',
-        returnCode: 1
-      })
-      expect(logger.error).to.have.been.calledWith(
-        '[%s] %s', 'some version', 'some error')
+  return runTests('some dir', 'some version').then(result => {
+    t.same(result, {
+      version: 'some version',
+      returnCode: 1
     })
+    t.true(logger.error.calledWith('[%s] %s', 'some version', 'some error'))
+  })
 })
