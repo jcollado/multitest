@@ -25,7 +25,7 @@ describe('runTests', function () {
   process.env.NVM_DIR = '<nvm>'
 
   function requireModule () {
-    return requireInject('../../src/run/one', stubs)
+    return requireInject('../../src/run/one', stubs).default
   }
 
   beforeEach(function () {
