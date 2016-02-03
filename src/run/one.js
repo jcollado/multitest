@@ -1,11 +1,9 @@
-'use strict'
+import path from 'path'
 
-const path = require('path')
+import {logger} from '../logging'
+import util from '../util'
 
-const logger = require('../logging').logger
-const util = require('../util')
-
-function runTests (outputDir, version) {
+export default function runTests (outputDir, version) {
   const versionDir = path.join(outputDir, String(version))
 
   function execLog (subprocess) {
@@ -53,5 +51,3 @@ function runTests (outputDir, version) {
       return Promise.resolve({version, returnCode: err.code || 1})
     })
 }
-
-module.exports = runTests
