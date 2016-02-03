@@ -25,7 +25,7 @@ describe('runAllTests', function () {
   const versions = [4, 5]
 
   function requireModule () {
-    return requireInject('../../src/run/all', stubs)
+    return requireInject('../../src/run/all', stubs).default
   }
 
   beforeEach(function () {
