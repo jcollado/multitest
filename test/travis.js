@@ -1,5 +1,3 @@
-import 'babel-register'
-
 import path from 'path'
 
 import chai from 'chai'

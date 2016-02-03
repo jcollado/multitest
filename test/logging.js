@@ -1,4 +1,3 @@
-import 'babel-register'
 import chai from 'chai'
 import test from 'ava'
 
