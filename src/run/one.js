@@ -46,8 +46,8 @@ export default function runTests (outputDir, version) {
       logger.info('[%s] Test case execution success', version)
       return Promise.resolve({version, returnCode: 0})
     })
-    .catch(function (err) {
-      logger.error('[%s] %s', version, err.message)
-      return Promise.resolve({version, returnCode: err.code || 1})
+    .catch(function ({message, code = 1}) {
+      logger.error('[%s] %s', version, message)
+      return Promise.resolve({version, returnCode: code})
     })
 }
