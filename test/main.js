@@ -12,11 +12,12 @@ test.beforeEach(t => {
   const parseArguments = sinon.stub().returns({logLevel: 'info'})
   const travis = sinon.stub()
   const run = sinon.stub()
-  const stubs = {}
-  stubs[require.resolve('../src/arguments')] = {parseArguments}
-  stubs[require.resolve('../src/logging')] = {logger}
-  stubs[require.resolve('../src/run/all')] = run
-  stubs[require.resolve('../src/travis')] = travis
+  const stubs = {
+    [require.resolve('../src/arguments')]: {parseArguments},
+    [require.resolve('../src/logging')]: {logger},
+    [require.resolve('../src/run/all')]: run,
+    [require.resolve('../src/travis')]: travis
+  }
 
   const main = requireInject('../src/main', stubs).default
   t.context = {logger, main, run, travis}

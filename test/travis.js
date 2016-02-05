@@ -6,21 +6,20 @@ import 'sinon-as-promised'
 import test from 'ava'
 
 test.beforeEach(t => {
+  const logger = {
+    info: sinon.spy(),
+    error: sinon.spy()
+  }
+  const util = {}
   const stubs = {
     path: {
       basename: path.basename,
       extname: path.extname,
       join: sinon.stub().returns('<travis-file>')
-    }
+    },
+    [require.resolve('../src/logging')]: {logger},
+    [require.resolve('../src/util')]: util
   }
-  const logger = {
-    info: sinon.spy(),
-    error: sinon.spy()
-  }
-  stubs[require.resolve('../src/logging')] = {logger}
-
-  const util = {}
-  stubs[require.resolve('../src/util')] = util
 
   const parse = requireInject('../src/travis', stubs).default
   t.context = {logger, parse, util}

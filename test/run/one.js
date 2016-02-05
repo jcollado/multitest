@@ -21,9 +21,10 @@ test.beforeEach(t => {
     exec: sinon.stub(),
     mkdir: sinon.stub()
   }
-  const stubs = {}
-  stubs[require.resolve('../../src/logging')] = {logger}
-  stubs[require.resolve('../../src/util')] = util
+  const stubs = {
+    [require.resolve('../../src/logging')]: {logger},
+    [require.resolve('../../src/util')]: util
+  }
   const runTests = requireInject('../../src/run/one', stubs).default
 
   t.context = {logger, runTests, util}
