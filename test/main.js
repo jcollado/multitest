@@ -5,7 +5,7 @@ import test from 'ava'
 
 import pkg from '../package'
 
-test.beforeEach(t => {
+test.beforeEach((t) => {
   const logger = {
     info: sinon.spy()
   }
@@ -23,7 +23,7 @@ test.beforeEach(t => {
   t.context = {logger, main, run, travis}
 })
 
-test('main logs program version information', t => {
+test('main logs program version information', (t) => {
   const {logger, main, run, travis} = t.context
   travis.resolves()
   run.resolves(0)
@@ -33,18 +33,18 @@ test('main logs program version information', t => {
   })
 })
 
-test('main resolves to test results on success', t => {
+test('main resolves to test results on success', (t) => {
   const {main, run, travis} = t.context
   travis.resolves()
   const expected = 42
   run.resolves(expected)
 
-  return main().then(returnCode => t.is(returnCode, expected))
+  return main().then((returnCode) => t.is(returnCode, expected))
 })
 
-test('main resolves to 1 on travis parsing error', t => {
+test('main resolves to 1 on travis parsing error', (t) => {
   const {main, travis} = t.context
   travis.rejects()
 
-  return main().then(returnCode => t.is(returnCode, 1))
+  return main().then((returnCode) => t.is(returnCode, 1))
 })

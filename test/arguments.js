@@ -8,14 +8,14 @@ const defaults = {
   logLevel: 'some log level'
 }
 
-test('parseArguments uses defaults', t => {
+test('parseArguments uses defaults', (t) => {
   const program = parseArguments(defaults, [])
   t.is(program.version(), defaults.version)
   t.is(program.description(), defaults.description)
   t.is(program.logLevel, defaults.logLevel)
 })
 
-test('parseArguments parses arguments as expected', t => {
+test('parseArguments parses arguments as expected', (t) => {
   const expected = {
     logLevel: 'debug'
   }

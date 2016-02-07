@@ -8,7 +8,7 @@ import pkg from '../../package'
 const outputDir = '.' + pkg.name
 const versions = [4, 5]
 
-test.beforeEach(t => {
+test.beforeEach((t) => {
   const logger = {
     debug: sinon.spy(),
     info: sinon.spy(),
@@ -28,7 +28,7 @@ test.beforeEach(t => {
   t.context = {logger, one, runAllTests, util}
 })
 
-test('runAllTests makes directory if it does not exist', t => {
+test('runAllTests makes directory if it does not exist', (t) => {
   const {logger, runAllTests, util} = t.context
   util.exists.rejects()
   util.mkdir.resolves()
@@ -39,7 +39,7 @@ test('runAllTests makes directory if it does not exist', t => {
   })
 })
 
-test('runAllTests runs tests for each version', t => {
+test('runAllTests runs tests for each version', (t) => {
   const {one, runAllTests, util} = t.context
   util.exists.resolves()
   one.resolves({version: 'some version', returnCode: 0})
@@ -51,15 +51,15 @@ test('runAllTests runs tests for each version', t => {
   })
 })
 
-test('runAllTests resolves to 0 on test execution success', t => {
+test('runAllTests resolves to 0 on test execution success', (t) => {
   const {one, runAllTests, util} = t.context
   util.exists.resolves()
   one.resolves({version: 'some version', returnCode: 0})
 
-  return runAllTests(versions).then(returnCode => t.is(returnCode, 0))
+  return runAllTests(versions).then((returnCode) => t.is(returnCode, 0))
 })
 
-test('runAllTests resolves to 1 on test execution failure', t => {
+test('runAllTests resolves to 1 on test execution failure', (t) => {
   const {logger, one, runAllTests, util} = t.context
   util.exists.resolves()
   one

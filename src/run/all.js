@@ -19,11 +19,11 @@ export default function runAllTests (versions) {
     }))
   })
   .then(function (results) {
-    const failures = results.filter(result => result.returnCode !== 0)
+    const failures = results.filter((result) => result.returnCode !== 0)
     if (failures.length > 0) {
       logger.error(
         'Test execution failed for: %s',
-        failures.map(result => result.version)
+        failures.map((result) => result.version)
       )
       return Promise.resolve(1)
     }
