@@ -10,7 +10,7 @@ const defaultCommandOutput = {
 }
 process.env.NVM_DIR = '<nvm>'
 
-test.beforeEach(t => {
+test.beforeEach((t) => {
   const logger = {
     debug: sinon.spy(),
     info: sinon.spy(),
@@ -30,7 +30,7 @@ test.beforeEach(t => {
   t.context = {logger, runTests, util}
 })
 
-test('pulls changes if version directory exists', t => {
+test('pulls changes if version directory exists', (t) => {
   const {runTests, util} = t.context
   util.exists.resolves()
   util.exec.onFirstCall().resolves({
@@ -47,7 +47,7 @@ test('pulls changes if version directory exists', t => {
   })
 })
 
-test('makes directory and clones if version directory does not exist', t => {
+test('makes directory and clones if version directory does not exist', (t) => {
   const {runTests, util} = t.context
   util.exists.rejects()
   util.mkdir.resolves()
@@ -59,7 +59,7 @@ test('makes directory and clones if version directory does not exist', t => {
   })
 })
 
-test('runs test cases', t => {
+test('runs test cases', (t) => {
   const {runTests, util} = t.context
   util.exists.resolves()
   util.exec.resolves(defaultCommandOutput)
@@ -71,12 +71,12 @@ test('runs test cases', t => {
   })
 })
 
-test('returns 0 on success', t => {
+test('returns 0 on success', (t) => {
   const {logger, runTests, util} = t.context
   util.exists.resolves()
   util.exec.resolves(defaultCommandOutput)
 
-  return runTests('some dir', 'some version').then(result => {
+  return runTests('some dir', 'some version').then((result) => {
     t.same(result, {
       version: 'some version',
       returnCode: 0
@@ -86,13 +86,13 @@ test('returns 0 on success', t => {
   })
 })
 
-test('returns err.code on failure', t => {
+test('returns err.code on failure', (t) => {
   const {logger, runTests, util} = t.context
   util.exists.resolves()
   util.exec
     .onFirstCall().rejects({message: 'some error', code: 42})
 
-  return runTests('some dir', 'some version').then(result => {
+  return runTests('some dir', 'some version').then((result) => {
     t.same(result, {
       version: 'some version',
       returnCode: 42
@@ -102,12 +102,12 @@ test('returns err.code on failure', t => {
   })
 })
 
-test('return 1 if err.code is missing on failure', t => {
+test('return 1 if err.code is missing on failure', (t) => {
   const {logger, runTests, util} = t.context
   util.exists.rejects()
   util.mkdir.rejects(new Error('some error'))
 
-  return runTests('some dir', 'some version').then(result => {
+  return runTests('some dir', 'some version').then((result) => {
     t.same(result, {
       version: 'some version',
       returnCode: 1

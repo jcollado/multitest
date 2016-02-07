@@ -5,7 +5,7 @@ import sinon from 'sinon'
 import 'sinon-as-promised'
 import test from 'ava'
 
-test.beforeEach(t => {
+test.beforeEach((t) => {
   const logger = {
     info: sinon.spy(),
     error: sinon.spy()
@@ -25,7 +25,7 @@ test.beforeEach(t => {
   t.context = {logger, parse, util}
 })
 
-test('travis rejects if file is not found', t => {
+test('travis rejects if file is not found', (t) => {
   const {logger, parse, util} = t.context
   util.exists = sinon.stub().rejects()
 
@@ -35,7 +35,7 @@ test('travis rejects if file is not found', t => {
   })
 })
 
-test('travis rejects if language field is not found', t => {
+test('travis rejects if language field is not found', (t) => {
   const {logger, parse, util} = t.context
   util.exists = sinon.stub().resolves()
   util.readFile = sinon.stub().resolves('value: 42')
@@ -46,7 +46,7 @@ test('travis rejects if language field is not found', t => {
   })
 })
 
-test('travis rejects if language field is not node_js', t => {
+test('travis rejects if language field is not node_js', (t) => {
   const {logger, parse, util} = t.context
   util.exists = sinon.stub().resolves()
   util.readFile = sinon.stub().resolves('language: some-other-language')
@@ -59,7 +59,7 @@ test('travis rejects if language field is not node_js', t => {
   })
 })
 
-test('travis rejects if node_js field is not found', t => {
+test('travis rejects if node_js field is not found', (t) => {
   const {logger, parse, util} = t.context
   util.exists = sinon.stub().resolves()
   util.readFile = sinon.stub().resolves('language: node_js')
@@ -70,7 +70,7 @@ test('travis rejects if node_js field is not found', t => {
   })
 })
 
-test('travis resolves to versions found', t => {
+test('travis resolves to versions found', (t) => {
   const {logger, parse, util} = t.context
   util.exists = sinon.stub().resolves()
   util.readFile = sinon.stub().resolves(
@@ -79,7 +79,7 @@ test('travis resolves to versions found', t => {
     '- 4\n' +
     '- 5')
 
-  return parse().then(versions => {
+  return parse().then((versions) => {
     t.same(versions, [4, 5])
     t.true(logger.info.calledWith(
       'Node versions to use for testing: %s', [4, 5]))
