@@ -19,14 +19,13 @@ test('exec rejects if childProcess.exec fails', (t) => {
   return t.throws(util.exec('command'), 'some error')
 })
 
-test('exec resolves if childProcess.exec succeeds', (t) => {
+test('exec resolves if childProcess.exec succeeds', async function (t) {
   const {exec, util} = t.context
   exec.yields(null, 'stdout', 'stderr')
-  return util.exec('command').then((result) => {
-    t.same(result, {
-      command: 'command',
-      stdout: 'stdout',
-      stderr: 'stderr'
-    })
+  const result = await util.exec('command')
+  t.same(result, {
+    command: 'command',
+    stdout: 'stdout',
+    stderr: 'stderr'
   })
 })
