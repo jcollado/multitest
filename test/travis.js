@@ -70,7 +70,7 @@ test('travis rejects if node_js field is not found', (t) => {
   })
 })
 
-test('travis resolves to versions found', (t) => {
+test('travis resolves to versions found', async function (t) {
   const {logger, parse, util} = t.context
   util.exists = sinon.stub().resolves()
   util.readFile = sinon.stub().resolves(
@@ -79,9 +79,8 @@ test('travis resolves to versions found', (t) => {
     '- 4\n' +
     '- 5')
 
-  return parse().then((versions) => {
-    t.same(versions, [4, 5])
-    t.true(logger.info.calledWith(
-      'Node versions to use for testing: %s', [4, 5]))
-  })
+  const versions = await parse()
+  t.same(versions, [4, 5])
+  t.true(logger.info.calledWith(
+    'Node versions to use for testing: %s', [4, 5]))
 })
