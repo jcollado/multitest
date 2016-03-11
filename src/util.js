@@ -10,7 +10,7 @@ function exec (command, options) {
   return new Promise(function (resolve, reject) {
     childProcess.exec(command, options, function (err, stdout, stderr) {
       if (err) {
-        reject(err)
+        reject(new Error(err))
       } else {
         resolve({command, stdout, stderr})
       }
@@ -24,7 +24,7 @@ function exists (path) {
       if (exists) {
         resolve()
       } else {
-        reject()
+        reject(new Error())
       }
     })
   })
