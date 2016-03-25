@@ -41,7 +41,7 @@
     "babel-eslint": "5.0.0",
     "babel-preset-es2015-node4": "2.0.3",
     "babel-register": "6.6.5",
-    "coveralls": "2.11.8",
+    "coveralls": "2.11.9",
     "ghooks": "1.0.3",
     "nyc": "6.1.1",
     "pr-tagger": "0.7.1",
