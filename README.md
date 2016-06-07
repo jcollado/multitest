@@ -6,6 +6,7 @@
 [![Dependency Status](https://david-dm.org/jcollado/multitest.svg)](https://david-dm.org/jcollado/multitest)
 [![devDependency Status](https://david-dm.org/jcollado/multitest/dev-status.svg)](https://david-dm.org/jcollado/multitest#info=devDependencies)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
 Run `npm test` using multiple `node` versions
 
